@@ -22,6 +22,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.resolveconsultoria.resolveprefeitura.API.Resolve;
 import com.resolveconsultoria.resolveprefeitura.API.RetrofitConfig;
@@ -55,7 +56,10 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.CAMERA
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE
     };
 
     private Toolbar toolbar;
@@ -88,7 +92,7 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
     private ImageView imgPreview;
     private VideoView videoPreview;
     private Switch posicao;
-    private TextInputLayout descricao;
+    private TextInputEditText descricao;
     private Configuracoes configuracoes;
     private GPSTracker gps;
     private Solicitacao solicitacao;
@@ -129,8 +133,14 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
         posicao.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged (CompoundButton compoundButton, boolean b) {
+
+                if (configuracoes == null) {
+                    configuracoes = new Configuracoes();
+                }
+
                 configuracoes.setGPS(b);
                 sharedPreferences.atualizaConfiguracoes(configuracoes);
+
                 if (b){
                     if(!compoundButton.isPressed()) {
                         Dexter.withActivity(NovaSolicitacaoActivity.this)

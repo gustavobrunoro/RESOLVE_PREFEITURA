@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "895139297725",
+    "firebase_url": "https://resolve-prefeitura.firebaseio.com",
+    "project_id": "resolve-prefeitura",
+    "storage_bucket": "resolve-prefeitura.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895139297725:android:e6cfef9deef90ee3243ad4",
+        "android_client_info": {
+          "package_name": "com.resolveconsultoria.resolveprefeitura"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "895139297725-dlv6ec8dm2j35a0l65adsbo06iqnnfd1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.resolveconsultoria.resolveprefeitura",
+            "certificate_hash": "00201a2e10b8a15a184e8161b6fc0cbfada84bff"
+          }
+        },
+        {
+          "client_id": "895139297725-vh31klirpci1igcgp9vu67c126lclid4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv7KAR47TdHd8N2Y4EzAS6db1L2FG8fsI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "895139297725-vh31klirpci1igcgp9vu67c126lclid4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
