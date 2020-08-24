@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">RESOLVE PREFEITURAS</string>
+    <string name="id_Cliente">1</string>
+    <string name="url_catalogo_imgem">https://resolveconsultoria.com/gustavoteste/cliente/05426787000171/imagem/catalogo/</string>
+    <string name="title_activity_maps">Map</string>
+</resources>
