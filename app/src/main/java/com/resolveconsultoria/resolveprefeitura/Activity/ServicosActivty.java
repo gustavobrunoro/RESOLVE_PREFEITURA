@@ -110,7 +110,6 @@ public class ServicosActivty extends AppCompatActivity {
         itemConfig.setVisible(false);
         itemSair.setVisible(false);
 
-
         searchView.setMenuItem(item);
         return  true;
     }
