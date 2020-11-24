@@ -30,6 +30,7 @@ import com.resolveconsultoria.resolveprefeitura.Database.SharedPreferences;
 import com.resolveconsultoria.resolveprefeitura.Model.Configuracoes;
 import com.resolveconsultoria.resolveprefeitura.Model.Servico;
 import com.resolveconsultoria.resolveprefeitura.Model.Solicitacao;
+import com.resolveconsultoria.resolveprefeitura.Model.Usuario;
 import com.resolveconsultoria.resolveprefeitura.R;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -96,6 +97,7 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
     private Configuracoes configuracoes;
     private GPSTracker gps;
     private Solicitacao solicitacao;
+    private Usuario usuario ;
 
     private Retrofit retrofit;
     private Resolve resolve;
@@ -107,6 +109,7 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nova_solicitacao);
 
         servico = (Servico) getIntent().getSerializableExtra( "Servico" );
+        usuario = (Usuario) getIntent().getSerializableExtra( "Usuario" );
 
         inicializaComponentes ();
 
@@ -187,20 +190,6 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
         gps = new GPSTracker( getApplicationContext() );
     }
 
-    private void inicializaComponentes (){
-
-        toolbar           = findViewById( R.id.toolbar );
-        imgPreview        = findViewById( R.id.imgPreview);
-        videoPreview      = findViewById( R.id.videoPreview);
-        posicao           = findViewById( R.id.sw_Nova_Solicitacao_LocalizacaoID);
-        descricao         = findViewById( R.id.ti_Descricao);
-
-        retrofit          = RetrofitConfig.getRetrofit( );
-        resolve           = retrofit.create( Resolve.class);
-        sharedPreferences = new SharedPreferences( getApplicationContext() );
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // if the result is capturing Image
@@ -265,6 +254,20 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
 
         // get the file url
         imageStoragePath = savedInstanceState.getString(KEY_IMAGE_STORAGE_PATH);
+    }
+
+    public void inicializaComponentes (){
+
+        toolbar           = findViewById( R.id.toolbar );
+        imgPreview        = findViewById( R.id.imgPreview);
+        videoPreview      = findViewById( R.id.videoPreview);
+        posicao           = findViewById( R.id.sw_Nova_Solicitacao_LocalizacaoID);
+        descricao         = findViewById( R.id.ti_Descricao);
+
+        retrofit          = RetrofitConfig.getRetrofit( );
+        resolve           = retrofit.create( Resolve.class);
+        sharedPreferences = new SharedPreferences( getApplicationContext() );
+
     }
 
     public void restoreFromBundle(Bundle savedInstanceState) {
@@ -459,20 +462,52 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
 
     public void enviarSolicitacao(View view){
 
-        SimpleDateFormat simpleFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if (verificarUsuarioLogado()) {
 
-        solicitacao.setClienteIDFK( R.string.id_Cliente );
-        solicitacao.setCategoriaIDFK(servico.getCategoriaIDFK());
-        solicitacao.setServicoIDFK(servico.getServicoID());
-        if (!gps.canGetLocation()){
-            if (posicao.isChecked()) {
-                solicitacao.setLatitude(gps.getLatitude());
-                solicitacao.setLongitude(gps.getLongitude());
+            SimpleDateFormat simpleFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            solicitacao.setClienteIDFK(R.string.id_Cliente);
+            solicitacao.setCategoriaIDFK(servico.getCategoriaIDFK());
+            solicitacao.setServicoIDFK(servico.getServicoID());
+            solicitacao.setUsuarioIDFK(usuario.getUsuarioID());
+            if (! gps.canGetLocation()) {
+                if (posicao.isChecked()) {
+                    solicitacao.setLatitude(gps.getLatitude());
+                    solicitacao.setLongitude(gps.getLongitude());
+                }
             }
+            solicitacao.setDescricao(descricao.toString());
+            solicitacao.setDataSolicitacao(simpleFormatter.format(new Date()));
+            solicitacao.setStatus(1);
+
+            resolve.postSolicitacao(solicitacao).enqueue(new Callback<Solicitacao>() {
+                @Override
+                public void onResponse (Call<Solicitacao> call, Response<Solicitacao> response) {
+
+                    if (response.isSuccessful()) {
+                        uploadFile(response.body());
+                    } else {
+                        Toast.makeText(NovaSolicitacaoActivity.this, "Não foi possivel enviar solicitacão. " + "\n" + response.toString(), Toast.LENGTH_LONG).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure (Call<Solicitacao> call, Throwable t) {
+                    Toast.makeText(NovaSolicitacaoActivity.this, "Não foi possivel enviar solicitacão. " + "\n" + t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+
         }
-        solicitacao.setDescricao( descricao.toString() );
-        solicitacao.setDataSolicitacao( simpleFormatter.format( new Date() ) );
-        solicitacao.setStatus(1);
+        else{
+            alertUsuarioLogado();
+        }
+
+    }
+
+    public void uploadFile(Solicitacao solicitacao){
+
+          Uri fileUri;
 
 //        BitmapDrawable drawable = (BitmapDrawable) imgPreview.getDrawable();
 //        Bitmap bitmap = drawable.getBitmap();
@@ -481,24 +516,8 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
 //        byte[] bb = bos.toByteArray();
 //        solicitacao.setFoto( Base64.encodeToString(bb,0) );
 
-        resolve.postSolicitacao(solicitacao).enqueue(new Callback<Solicitacao>() {
-            @Override
-            public void onResponse (Call<Solicitacao> call, Response<Solicitacao> response) {
 
-                if (response.isSuccessful()){
-
-                    alertSucess(response.body());
-                }
-                else{
-                    Toast.makeText(NovaSolicitacaoActivity.this, "Não foi possivel enviar solicitacão. " + "\n"+  response.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure (Call<Solicitacao> call, Throwable t) {
-                Toast.makeText(NovaSolicitacaoActivity.this, "Não foi possivel enviar solicitacão. " + "\n"+ t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+        alertSucess(solicitacao);
 
     }
 
@@ -518,5 +537,16 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
         alertDialog.show();
 
     }
+
+    public boolean verificarUsuarioLogado(){
+
+        if (usuario == null ){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public void alertUsuarioLogado(){}
 
 }

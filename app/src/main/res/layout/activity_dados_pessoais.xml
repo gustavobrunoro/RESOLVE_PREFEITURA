@@ -99,7 +99,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Senha" />
+                    android:text="Senha"
+                    android:visibility="gone"/>
 
                 <EditText
                     android:id="@+id/edt_Senha"
@@ -107,7 +108,8 @@
                     android:layout_height="match_parent"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
@@ -288,6 +290,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
                 android:text="Salvar"
+                android:onClick="saveDadosPessoais"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -31,10 +31,10 @@ public class SharedPreferences {
     }
 
     /**Metodos responsavel atualizar dados pessoais no SharedPreferences*/
-    public void atualizaDadosPessoais(Usuario entrevistador){
+    public void atualizaDadosPessoais(Usuario usuario){
 
         Gson gson = new Gson();
-        String json = gson.toJson(entrevistador);
+        String json = gson.toJson(usuario);
         editor.putString(DADOSPESSOAIS, json);
         editor.commit();
 

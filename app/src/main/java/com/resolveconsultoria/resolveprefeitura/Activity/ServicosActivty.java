@@ -1,6 +1,7 @@
 package com.resolveconsultoria.resolveprefeitura.Activity;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -9,9 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.resolveconsultoria.resolveprefeitura.Adapter.AdapterServico;
 import com.resolveconsultoria.resolveprefeitura.Helper.RecyclerItemClickListener;
 import com.resolveconsultoria.resolveprefeitura.Model.Categoria;
@@ -23,14 +28,16 @@ import java.util.List;
 
 import info.androidhive.fontawesome.FontDrawable;
 
-public class ListaServicosActivty extends AppCompatActivity {
+public class ServicosActivty extends AppCompatActivity {
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
     private AdapterServico adapter;
     private List<Servico> listaServicosList = new ArrayList<>();
     private Servico servico = new Servico();
     private Categoria categoria = new Categoria();
+    private MaterialSearchView searchView;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -43,18 +50,26 @@ public class ListaServicosActivty extends AppCompatActivity {
 
         inicializaComponentes ();
 
-        toolbar.setTitle(categoria.getDescricao());
-        setSupportActionBar(toolbar);
-
-        adapter = new AdapterServico(listaServicosList,this);
+        toolbar.setTitle( categoria.getDescricao() );
+        setSupportActionBar( toolbar );
 
         FontDrawable drawable = new FontDrawable(this, R.string.fa_heart_solid, true, false);
         drawable.setTextColor(ContextCompat.getColor(this, android.R.color.holo_blue_dark));
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
+        atualizaRecycleView( listaServicosList );
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
 
         recyclerView.addOnItemTouchListener( new RecyclerItemClickListener( getApplicationContext(),  recyclerView,  new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -80,11 +95,38 @@ public class ListaServicosActivty extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu) {
+        menu.clear();
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_principal,menu);
+
+        final MenuItem item = menu.findItem(R.id.menu_search);
+        final MenuItem itemDados = menu.findItem(R.id.DadosPessoais);
+        final MenuItem itemConfig = menu.findItem(R.id.action_settings);
+        final MenuItem itemSair = menu.findItem(R.id.sair);
+
+        itemDados.setVisible(false);
+        itemConfig.setVisible(false);
+        itemSair.setVisible(false);
+
+        searchView.setMenuItem(item);
+        return  true;
+    }
+
     private void inicializaComponentes (){
-
         toolbar        = findViewById( R.id.toolbar );
+        searchView     = findViewById(R.id.search_view);
         recyclerView   = findViewById( R.id.recycle_Listagem_ItemID);
+    }
 
+    public void atualizaRecycleView (List<Servico> listaServicosList){
+        adapter = new AdapterServico(listaServicosList,this);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
 }

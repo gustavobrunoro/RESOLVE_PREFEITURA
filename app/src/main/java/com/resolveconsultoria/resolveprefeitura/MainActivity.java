@@ -2,11 +2,11 @@ package com.resolveconsultoria.resolveprefeitura;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.resolveconsultoria.resolveprefeitura.API.Resolve;
 import com.resolveconsultoria.resolveprefeitura.API.RetrofitConfig;
 import com.resolveconsultoria.resolveprefeitura.Activity.DadosPessoaisActivity;
-import com.resolveconsultoria.resolveprefeitura.Activity.ListaServicosActivty;
+import com.resolveconsultoria.resolveprefeitura.Activity.ServicosActivty;
 import com.resolveconsultoria.resolveprefeitura.Helper.CustomGridViewActivity;
 import com.resolveconsultoria.resolveprefeitura.Model.Categoria;
 import com.resolveconsultoria.resolveprefeitura.Model.Cliente;
@@ -50,8 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
         inicializaComponentes ();
 
-        toolbar.setTitle( "Prefeitura " );
+        toolbar.setTitle( R.string.Main_title_Prefeitura );
         setSupportActionBar( toolbar );
+
+        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
+                R.drawable.ic_baseline_more_vert_24 );
+        toolbar.setOverflowIcon(drawable);
 
         downloadCategoria( IDCliente );
 
@@ -61,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_principal, menu);
+        final MenuItem item = menu.findItem(R.id.menu_search);
+        item.setVisible(false);
         return true;
     }
 
@@ -79,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void inicializaComponentes (){
 
-        toolbar  = findViewById( R.id.toolbar );
+        toolbar         = findViewById( R.id.toolbar );
+        androidGridView = (GridView)findViewById(R.id.grid_view_image_text);
 
         retrofit = RetrofitConfig.getRetrofit(  );
         resolve  = retrofit.create( Resolve.class);
@@ -94,14 +101,13 @@ public class MainActivity extends AppCompatActivity {
                     carregaCatalogo(cliente);
                 }
                 else{
-                    Toast.makeText(MainActivity.this, "Não foi possível efetuar download do catálogo de serviços ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.Main_erro_Catalogo_Servico, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure (Call<List<Cliente>> call, Throwable t) {
-                Log.i("Controle",t.toString());
-                Toast.makeText(MainActivity.this, "Falhar ao Conectar no Servidor! ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, R.string.Erro_Conexao_Internet, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -114,13 +120,12 @@ public class MainActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.imageView);
 
         CustomGridViewActivity adapterViewAndroid = new CustomGridViewActivity(this, categoriaList );
-        androidGridView=(GridView)findViewById(R.id.grid_view_image_text);
+
         androidGridView.setAdapter(adapterViewAndroid);
         androidGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view,int i, long id) {
-                startActivity( new Intent( getApplicationContext() , ListaServicosActivty.class ).putExtra("Categoria",categoriaList.get(i)));
+                startActivity( new Intent( getApplicationContext() , ServicosActivty.class ).putExtra("Categoria",categoriaList.get(i)));
             }
         });
     }

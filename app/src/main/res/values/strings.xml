@@ -3,4 +3,12 @@
     <string name="id_Cliente">1</string>
     <string name="url_catalogo_imgem">https://resolveconsultoria.com/gustavoteste/cliente/05426787000171/imagem/catalogo/</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="Erro_Conexao_Internet">"Necessário verificar Conexão"</string>
+
+
+    <string name="Main_title_Prefeitura">"Prefeitura"</string>
+    <string name="Main_erro_Catalogo_Servico">\"Não foi possível efetuar download do catálogo de serviços \"</string>
+    <string name="DadosPessoais_title">Dados Pessoais</string>
+
 </resources>

@@ -43,6 +43,7 @@ public class CustomGridViewActivity extends BaseAdapter {
     @Override
     public View getView(int i, View convertView, ViewGroup parent) {
         View gridViewAndroid;
+
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null) {
@@ -52,8 +53,9 @@ public class CustomGridViewActivity extends BaseAdapter {
             gridViewAndroid = new View(mContext);
             gridViewAndroid = inflater.inflate(R.layout.gridview_layout, null);
             TextView textViewAndroid = (TextView) gridViewAndroid.findViewById(R.id.android_gridview_text);
-            final  ImageView imageViewAndroid = (ImageView) gridViewAndroid.findViewById(R.id.android_gridview_image);
+            final ImageView imageViewAndroid = (ImageView) gridViewAndroid.findViewById(R.id.android_gridview_image);
             textViewAndroid.setText(categoriaList.get(i).getDescricao());
+
             Picasso.get().load( url ).into(imageViewAndroid);
 
         }

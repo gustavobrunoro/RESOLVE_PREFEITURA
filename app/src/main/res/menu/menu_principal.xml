@@ -3,11 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <item android:id="@+id/action_settings"
-        android:title="Configurações"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
-
     <item
         android:id="@+id/notification"
         android:title="Notification"
@@ -21,6 +16,18 @@
         app:showAsAction="always"
         android:icon="@drawable/ic_baseline_person_24"/>
 
+    <item
+        android:id="@+id/menu_search"
+        android:orderInCategory="100"
+        android:title="Pesquisa"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_search_24"/>
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="Configurações"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/sair"

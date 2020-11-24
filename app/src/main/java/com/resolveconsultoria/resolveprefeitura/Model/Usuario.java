@@ -5,13 +5,21 @@ import java.io.Serializable;
 public class Usuario implements Serializable {
 
     private int usuarioID;
-    private int cliente;
-    private String nome;
+    private int ClienteIDFK;
+    private String Nome;
     private String CPF;
-    private String email;
-    private String senha;
-    private String tokenNotificacaoMobile;
-    private String api_token;
+    private String DataNascimento;
+    private String Telefone;
+    private String CEP;
+    private String Cidade;
+    private String Bairro;
+    private String Endereco;
+    private String Numero;
+    private String Complemento;
+    private String Foto_URL;
+    private String Email;
+    private String Senha;
+    private String Token_Mobile;
 
     public Usuario () {
     }
@@ -24,20 +32,20 @@ public class Usuario implements Serializable {
         this.usuarioID = usuarioID;
     }
 
-    public int getCliente () {
-        return cliente;
+    public int getClienteIDFK () {
+        return ClienteIDFK;
     }
 
-    public void setCliente (int cliente) {
-        this.cliente = cliente;
+    public void setClienteIDFK (int clienteIDFK) {
+        ClienteIDFK = clienteIDFK;
     }
 
     public String getNome () {
-        return nome;
+        return Nome;
     }
 
     public void setNome (String nome) {
-        this.nome = nome;
+        Nome = nome;
     }
 
     public String getCPF () {
@@ -48,35 +56,99 @@ public class Usuario implements Serializable {
         this.CPF = CPF;
     }
 
+    public String getDataNascimento () {
+        return DataNascimento;
+    }
+
+    public void setDataNascimento (String dataNascimento) {
+        DataNascimento = dataNascimento;
+    }
+
+    public String getTelefone () {
+        return Telefone;
+    }
+
+    public void setTelefone (String telefone) {
+        Telefone = telefone;
+    }
+
+    public String getCEP () {
+        return CEP;
+    }
+
+    public void setCEP (String CEP) {
+        this.CEP = CEP;
+    }
+
+    public String getCidade () {
+        return Cidade;
+    }
+
+    public void setCidade (String cidade) {
+        Cidade = cidade;
+    }
+
+    public String getBairro () {
+        return Bairro;
+    }
+
+    public void setBairro (String bairro) {
+        Bairro = bairro;
+    }
+
+    public String getEndereco () {
+        return Endereco;
+    }
+
+    public void setEndereco (String endereco) {
+        Endereco = endereco;
+    }
+
+    public String getNumero () {
+        return Numero;
+    }
+
+    public void setNumero (String numero) {
+        Numero = numero;
+    }
+
+    public String getComplemento () {
+        return Complemento;
+    }
+
+    public void setComplemento (String complemento) {
+        Complemento = complemento;
+    }
+
+    public String getFoto_URL () {
+        return Foto_URL;
+    }
+
+    public void setFoto_URL (String foto_URL) {
+        Foto_URL = foto_URL;
+    }
+
     public String getEmail () {
-        return email;
+        return Email;
     }
 
     public void setEmail (String email) {
-        this.email = email;
+        Email = email;
     }
 
     public String getSenha () {
-        return senha;
+        return Senha;
     }
 
     public void setSenha (String senha) {
-        this.senha = senha;
+        Senha = senha;
     }
 
-    public String getTokenNotificacaoMobile () {
-        return tokenNotificacaoMobile;
+    public String getToken_Mobile () {
+        return Token_Mobile;
     }
 
-    public void setTokenNotificacaoMobile (String tokenNotificacaoMobile) {
-        this.tokenNotificacaoMobile = tokenNotificacaoMobile;
-    }
-
-    public String getApi_token () {
-        return api_token;
-    }
-
-    public void setApi_token (String api_token) {
-        this.api_token = api_token;
+    public void setToken_Mobile (String token_Mobile) {
+        Token_Mobile = token_Mobile;
     }
 }
