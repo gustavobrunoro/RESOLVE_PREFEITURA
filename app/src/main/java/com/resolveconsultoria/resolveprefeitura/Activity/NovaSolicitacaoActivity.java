@@ -112,6 +112,7 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
         usuario = (Usuario) getIntent().getSerializableExtra( "Usuario" );
 
         inicializaComponentes ();
+        toolbar.setTitle(servico.getDescricao());
 
         configuracoes = sharedPreferences.recupraConfiguracoes();
 

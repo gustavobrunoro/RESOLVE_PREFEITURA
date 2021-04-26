@@ -4,6 +4,7 @@ public class Configuracoes {
 
     private boolean GPS;
 
+
     public Configuracoes () {
     }
 
