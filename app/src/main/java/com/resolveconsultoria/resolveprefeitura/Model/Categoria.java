@@ -1,12 +1,19 @@
 package com.resolveconsultoria.resolveprefeitura.Model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.resolveconsultoria.resolveprefeitura.Database.CONVERT.DataConvertServico;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Entity
 public class Categoria implements Serializable {
 
+    @PrimaryKey
     private int CategoriaID;
     private int ClienteIDFK;
     private int ResponsavelIDFK;
@@ -14,6 +21,7 @@ public class Categoria implements Serializable {
     private String Descricao;
     private String Icone;
     private int Ativo;
+    @TypeConverters(DataConvertServico.class)
     private List<Servico> Servicos = new ArrayList<>();
 
     public Categoria () {

@@ -14,16 +14,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.resolveconsultoria.resolveprefeitura.API.Resolve;
 import com.resolveconsultoria.resolveprefeitura.API.RetrofitConfig;
 import com.resolveconsultoria.resolveprefeitura.Database.SharedPreferences;
@@ -98,6 +100,8 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
     private GPSTracker gps;
     private Solicitacao solicitacao;
     private Usuario usuario ;
+    private int totalCaracteres = 240;
+    private TextView totalCaracteresDigitados;
 
     private Retrofit retrofit;
     private Resolve resolve;
@@ -175,6 +179,27 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
         });
 
         restoreFromBundle(savedInstanceState);
+
+        totalCaracteresDigitados.setText( getString( R.string.novasolicitacao_caracteres_restantes, 240 ) );
+
+        descricao.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged (CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged (CharSequence s, int start, int before, int count) {
+
+                totalCaracteresDigitados.setText( getString( R.string.novasolicitacao_caracteres_restantes, ( 240 - count ) ) );
+
+            }
+
+            @Override
+            public void afterTextChanged (Editable s) {
+
+            }
+        });
 
     }
 
@@ -259,15 +284,16 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
 
     public void inicializaComponentes (){
 
-        toolbar           = findViewById( R.id.toolbar );
-        imgPreview        = findViewById( R.id.imgPreview);
-        videoPreview      = findViewById( R.id.videoPreview);
-        posicao           = findViewById( R.id.sw_Nova_Solicitacao_LocalizacaoID);
-        descricao         = findViewById( R.id.ti_Descricao);
+        toolbar                  = findViewById( R.id.toolbar );
+        imgPreview               = findViewById( R.id.imgPreview);
+        videoPreview             = findViewById( R.id.videoPreview);
+        posicao                  = findViewById( R.id.sw_Nova_Solicitacao_LocalizacaoID);
+        descricao                = findViewById( R.id.ti_Descricao);
+        totalCaracteresDigitados = findViewById( R.id.tv_total_caracteres);
 
-        retrofit          = RetrofitConfig.getRetrofit( );
-        resolve           = retrofit.create( Resolve.class);
-        sharedPreferences = new SharedPreferences( getApplicationContext() );
+        retrofit                 = RetrofitConfig.getRetrofit( );
+        resolve                  = retrofit.create( Resolve.class);
+        sharedPreferences        = new SharedPreferences( getApplicationContext() );
 
     }
 

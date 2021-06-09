@@ -56,7 +56,9 @@ public class CustomGridViewActivity extends BaseAdapter {
             final ImageView imageViewAndroid = (ImageView) gridViewAndroid.findViewById(R.id.android_gridview_image);
             textViewAndroid.setText(categoriaList.get(i).getDescricao());
 
-            Picasso.get().load( url ).into(imageViewAndroid);
+            //Picasso.get().load( url ).into(imageViewAndroid);
+
+            Picasso.with(mContext).load( url ).into(imageViewAndroid);
 
         }
         else {

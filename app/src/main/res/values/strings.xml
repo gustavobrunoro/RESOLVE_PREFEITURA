@@ -11,4 +11,9 @@
     <string name="Main_erro_Catalogo_Servico">\"Não foi possível efetuar download do catálogo de serviços \"</string>
     <string name="DadosPessoais_title">Dados Pessoais</string>
 
+    !-- TODO: Nova Solicitacao -->
+    <string name="novasolicitacao_caracteres_restantes">%1$d caracteres restantes</string>
+    <item type="integer" name="max_length">12</item>
+
+
 </resources>

@@ -46,13 +46,15 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-jackson:2.5.0'
 
     //Implementacao GSON
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.7'
 
     //Implementação da Pagina de Contatos e Sobre
     implementation 'com.github.medyo:android-about-page:1.2.4'
 
     //Implementação da Picasso (Trabalha com Imagem Web)
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     //Implementação da Power Image Compress (Trabalha com Imagem)
     implementation 'br.com.powerapps.image.compress:power-image-compress:0.2.0'
@@ -74,5 +76,18 @@ dependencies {
 
     //Implementação da Pesquisa Toolbar
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+
+    //Implementação Butter knife
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
+
+    //Botão de Navegação Inferior
+    implementation 'com.ss.bottomnavigation:bottomnavigation:1.5.2'
+
+    //Implementacao ROOM
+    implementation "androidx.room:room-runtime:2.2.5"
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    annotationProcessor "androidx.room:room-compiler:2.2.5"
 
 }

@@ -1,27 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/android_gridview_example"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/Fundo">
+    tools:context=".MainActivity">
 
     <include
-        android:id="@+id/toolbarID"
+        android:id="@+id/toolbarMainActivityID"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <GridView
-        android:id="@+id/grid_view_image_text"
+    <FrameLayout
+        android:id="@+id/fv_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnWidth="110dp"
-        android:gravity="center"
-        android:numColumns="auto_fit"
-        android:layout_marginTop="2dp"
-        android:padding="15dp"/>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMainActivityID" />
 
-</LinearLayout>
+    <com.ss.bottomnavigation.BottomNavigation
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/primaryColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:tab_icon="@drawable/ic_baseline_home_24"
+            app:tab_text="Inicio" />
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_servicos"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:tab_icon="@drawable/ic_baseline_assignment_24"
+            app:tab_text="Serviços" />
+
+
+        <com.ss.bottomnavigation.TabItem
+            android:id="@+id/tab_comunidade"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:tab_icon="@drawable/ic_baseline_people_24"
+            app:tab_text="Comunidade" />
+
+    </com.ss.bottomnavigation.BottomNavigation>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
