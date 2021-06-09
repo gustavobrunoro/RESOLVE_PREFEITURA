@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.resolveconsultoria.resolveprefeitura.Activity.DadosPessoaisActivity;
+import com.resolveconsultoria.resolveprefeitura.Activity.Fragment.ComunidadeFragment;
 import com.resolveconsultoria.resolveprefeitura.Activity.Fragment.NoticiasFragment;
 import com.resolveconsultoria.resolveprefeitura.Activity.Fragment.CategoriasFragment;
 import com.ss.bottomnavigation.BottomNavigation;
@@ -84,10 +85,10 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTransaction=getSupportFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.fv_view,new CategoriasFragment());
                         break;
-//                    case R.id.tab_camera:
-//                        fragmentTransaction=getSupportFragmentManager().beginTransaction();
-//                        fragmentTransaction.replace(R.id.fv_view,new RegistroPontoExportacaoFragment());
-//                        break;
+                    case R.id.tab_comunidade:
+                        fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.fv_view,new ComunidadeFragment());
+                        break;
                 }
                 fragmentTransaction.commit();
             }

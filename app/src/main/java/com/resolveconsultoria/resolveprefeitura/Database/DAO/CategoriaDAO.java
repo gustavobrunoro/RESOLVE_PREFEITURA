@@ -1,5 +1,6 @@
 package com.resolveconsultoria.resolveprefeitura.Database.DAO;
 
+import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -9,6 +10,7 @@ import com.resolveconsultoria.resolveprefeitura.Model.Categoria;
 
 import java.util.List;
 
+@Dao
 public interface CategoriaDAO {
 
     @Query("SELECT * FROM Categoria")
@@ -31,5 +33,11 @@ public interface CategoriaDAO {
 
     @Query("DELETE FROM Categoria Where CategoriaID = :CategoriaID")
     void delete( int CategoriaID);
+
+    @Query("SELECT * FROM Categoria WHERE CategoriaID = :CategoriaID")
+    boolean isExist(int CategoriaID);
+
+    @Query("SELECT * FROM Categoria WHERE CategoriaID = :CategoriaID AND Ativo = 1")
+    boolean ativo(int CategoriaID);
 
 }

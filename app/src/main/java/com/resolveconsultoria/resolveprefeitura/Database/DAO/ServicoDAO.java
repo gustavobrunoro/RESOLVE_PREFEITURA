@@ -1,5 +1,6 @@
 package com.resolveconsultoria.resolveprefeitura.Database.DAO;
 
+import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -10,13 +11,14 @@ import com.resolveconsultoria.resolveprefeitura.Model.Servico;
 
 import java.util.List;
 
+@Dao
 public interface ServicoDAO {
 
     @Query("SELECT * FROM Servico")
     List<Servico> getServicoList ();
 
     @Query("SELECT * FROM Servico WHERE ServicoID = :ServicoID ")
-    Categoria getServico (int ServicoID);
+    Servico getServico (int ServicoID);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertServico (Servico servico);
@@ -33,4 +35,6 @@ public interface ServicoDAO {
     @Query("DELETE FROM Servico Where ServicoID = :ServicoID")
     void delete( int ServicoID);
 
+    @Query("SELECT * FROM Servico WHERE ServicoID = :ServicoID")
+    boolean isExist(int ServicoID);
 }

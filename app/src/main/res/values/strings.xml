@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RESOLVE PREFEITURAS</string>
+    <string name="app_name">RC | Prefeituras</string>
     <string name="id_Cliente">1</string>
     <string name="url_catalogo_imgem">https://resolveconsultoria.com/gustavoteste/cliente/05426787000171/imagem/catalogo/</string>
     <string name="title_activity_maps">Map</string>
@@ -13,7 +13,9 @@
 
     !-- TODO: Nova Solicitacao -->
     <string name="novasolicitacao_caracteres_restantes">%1$d caracteres restantes</string>
-    <item type="integer" name="max_length">12</item>
+    <item name="max_length" type="integer">12</item>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
