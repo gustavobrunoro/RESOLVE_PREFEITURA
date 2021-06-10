@@ -13,9 +13,8 @@
 
     !-- TODO: Nova Solicitacao -->
     <string name="novasolicitacao_caracteres_restantes">%1$d caracteres restantes</string>
-    <item name="max_length" type="integer">12</item>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <item name="max_length" type="integer">240</item>
+
 
 
 </resources>

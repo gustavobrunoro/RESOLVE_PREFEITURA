@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 import com.resolveconsultoria.resolveprefeitura.API.Resolve;
 import com.resolveconsultoria.resolveprefeitura.API.RetrofitConfig;
 import com.resolveconsultoria.resolveprefeitura.Activity.ServicosActivty;
+import com.resolveconsultoria.resolveprefeitura.Database.CONVERT.AppExecutors;
+import com.resolveconsultoria.resolveprefeitura.Database.ConfiguracaoDatabase;
 import com.resolveconsultoria.resolveprefeitura.Helper.CustomGridViewActivity;
 import com.resolveconsultoria.resolveprefeitura.Model.Categoria;
 import com.resolveconsultoria.resolveprefeitura.Model.Cliente;
@@ -40,6 +43,7 @@ public class CategoriasFragment extends Fragment {
     private GridView androidGridView;
     private Cliente cliente;
     private List<Categoria> categoriaList = new ArrayList<>();
+    private ConfiguracaoDatabase configuracaoDatabase;
 
     private Retrofit retrofit;
     private Resolve resolve;
@@ -56,7 +60,8 @@ public class CategoriasFragment extends Fragment {
         drawable.setTextColor(ContextCompat.getColor( context, android.R.color.holo_blue_dark));
 
         int IDCliente = Integer.decode(getString(R.string.id_Cliente));
-        downloadCategoria( IDCliente );
+       // downloadCategoria( IDCliente );
+        carregaCatalogo( cliente );
 
         return view;
 
@@ -66,6 +71,7 @@ public class CategoriasFragment extends Fragment {
 
         androidGridView = (GridView) view.findViewById(R.id.grid_view_image_text);
 
+        configuracaoDatabase = ConfiguracaoDatabase.getInstance( context );
         retrofit = RetrofitConfig.getRetrofit(  );
         resolve  = retrofit.create( Resolve.class);
     }
@@ -75,29 +81,63 @@ public class CategoriasFragment extends Fragment {
             @Override
             public void onResponse (Call<List<Cliente>> call, Response<List<Cliente>> response) {
                 if (response.isSuccessful()){
+
                     cliente = response.body().get(0);
-                    carregaCatalogo(cliente);
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            configuracaoDatabase.categoriaDAO().insertCategoriaList( cliente.getCategoias() );
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run () {
+                                    carregaCatalogo( cliente );
+                                }
+                            });
+                        }
+                    });
+
                 }
                 else{
                     Toast.makeText(context, R.string.Main_erro_Catalogo_Servico, Toast.LENGTH_SHORT).show();
+                    carregaCatalogo( cliente );
                 }
             }
 
             @Override
             public void onFailure (Call<List<Cliente>> call, Throwable t) {
                 Toast.makeText(context, R.string.Erro_Conexao_Internet, Toast.LENGTH_SHORT).show();
+                carregaCatalogo( cliente );
             }
         });
+
+
     }
 
     public void carregaCatalogo(Cliente cliente){
 
-        categoriaList = cliente.getCategoias();
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run () {
+                categoriaList = configuracaoDatabase.categoriaDAO().getCategoriaList();
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run () {
+                        publishCatalogo();
+                    }
+                });
+            }
+        });
+    }
+
+    public void publishCatalogo(){
 
         List<Drawable> imamgem = new ArrayList<>();
         ImageView imageView = view.findViewById( R.id.imageView );
 
         CustomGridViewActivity adapterViewAndroid = new CustomGridViewActivity(context, categoriaList );
+
+        Log.i("Controle", String.valueOf(categoriaList.size()));
 
         androidGridView.setAdapter(adapterViewAndroid);
         androidGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -106,6 +146,7 @@ public class CategoriasFragment extends Fragment {
                 startActivity( new Intent( context , ServicosActivty.class ).putExtra("Categoria",categoriaList.get(i)));
             }
         });
+
     }
 
 }
