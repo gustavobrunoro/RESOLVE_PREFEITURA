@@ -52,7 +52,7 @@ public class NoticiasFragment extends Fragment {
 
         inicializaComponentes();
 
-        LoadRSSFeedItems( "https://rss.app/feeds/fw2oJnsw49veDG8M.xml") ;
+        LoadRSSFeedItems( "https://rss.app/feeds/s75nqu61nq5JtInf.xml") ;
 
         return view;
 

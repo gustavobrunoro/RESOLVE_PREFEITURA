@@ -60,8 +60,8 @@ public class CategoriasFragment extends Fragment {
         drawable.setTextColor(ContextCompat.getColor( context, android.R.color.holo_blue_dark));
 
         int IDCliente = Integer.decode(getString(R.string.id_Cliente));
-       // downloadCategoria( IDCliente );
-        carregaCatalogo( cliente );
+        downloadCategoria( IDCliente );
+       // carregaCatalogo( cliente );
 
         return view;
 
@@ -136,8 +136,6 @@ public class CategoriasFragment extends Fragment {
         ImageView imageView = view.findViewById( R.id.imageView );
 
         CustomGridViewActivity adapterViewAndroid = new CustomGridViewActivity(context, categoriaList );
-
-        Log.i("Controle", String.valueOf(categoriaList.size()));
 
         androidGridView.setAdapter(adapterViewAndroid);
         androidGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
