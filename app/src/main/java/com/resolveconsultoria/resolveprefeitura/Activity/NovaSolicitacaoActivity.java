@@ -20,6 +20,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,19 +42,23 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.resolveconsultoria.resolveprefeitura.Utils.CameraUtils;
 import com.resolveconsultoria.resolveprefeitura.Utils.GPSTracker;
+import com.resolveconsultoria.resolveprefeitura.Utils.ProgressRequestBody;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class NovaSolicitacaoActivity extends AppCompatActivity {
+public class NovaSolicitacaoActivity extends AppCompatActivity implements ProgressRequestBody.UploadCallbacks {
 
     private String[] permissoes = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -106,6 +111,9 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private Resolve resolve;
     private SharedPreferences sharedPreferences;
+
+    private ProgressBar progressBar;
+    private ProgressRequestBody fileBody;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -462,6 +470,14 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
         }
     }
 
+    public Uri getImageUri(Bitmap src,String nomeArquivo) {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        src.compress(Bitmap.CompressFormat.JPEG, 100, os);
+
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), src, "title", null);
+        return Uri.parse(path);
+    }
+
     public void showAlertGPS(){
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -507,44 +523,40 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
             solicitacao.setDataSolicitacao(simpleFormatter.format(new Date()));
             solicitacao.setStatus(1);
 
-            resolve.postSolicitacao(solicitacao).enqueue(new Callback<Solicitacao>() {
+            Bitmap bitmap = imgPreview.getDrawingCache();
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos );
+
+            byte[] dadosImagem = baos.toByteArray();
+
+            File file = null;
+
+            ProgressRequestBody fileBody = new ProgressRequestBody(file, "media",this);
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", file.getName(), fileBody);
+
+            resolve.postSolicitacao(solicitacao,filePart).enqueue(new Callback<ResponseBody>() {
                 @Override
-                public void onResponse (Call<Solicitacao> call, Response<Solicitacao> response) {
+                public void onResponse (Call<ResponseBody> call, Response<ResponseBody> response) {
 
                     if (response.isSuccessful()) {
-                        uploadFile(response.body());
-                    } else {
+                        Toast.makeText(NovaSolicitacaoActivity.this, "Solicitação enviada", Toast.LENGTH_LONG).show();
+                    }
+                    else {
                         Toast.makeText(NovaSolicitacaoActivity.this, "Não foi possivel enviar solicitacão. " + "\n" + response.toString(), Toast.LENGTH_LONG).show();
                     }
 
                 }
 
                 @Override
-                public void onFailure (Call<Solicitacao> call, Throwable t) {
+                public void onFailure (Call<ResponseBody> call, Throwable t) {
                     Toast.makeText(NovaSolicitacaoActivity.this, "Não foi possivel enviar solicitacão. " + "\n" + t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
-
         }
         else{
             alertUsuarioLogado();
         }
-
-    }
-
-    public void uploadFile(Solicitacao solicitacao){
-
-          Uri fileUri;
-
-//        BitmapDrawable drawable = (BitmapDrawable) imgPreview.getDrawable();
-//        Bitmap bitmap = drawable.getBitmap();
-//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);
-//        byte[] bb = bos.toByteArray();
-//        solicitacao.setFoto( Base64.encodeToString(bb,0) );
-
-
-        alertSucess(solicitacao);
 
     }
 
@@ -576,4 +588,18 @@ public class NovaSolicitacaoActivity extends AppCompatActivity {
 
     public void alertUsuarioLogado(){}
 
+    @Override
+    public void onProgressUpdate (int percentage) {
+        progressBar.setProgress(percentage);
+    }
+
+    @Override
+    public void onError () {
+
+    }
+
+    @Override
+    public void onFinish () {
+        progressBar.setProgress(100);
+    }
 }

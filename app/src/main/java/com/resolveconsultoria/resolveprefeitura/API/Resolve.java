@@ -22,13 +22,11 @@ public interface Resolve {
     @GET("catalogo/{ClienteID}")
     Call<List<Cliente>> getCatalogo (@Path("ClienteID") int ClienteID);
 
-    @POST("novaSolicitacao")
-    Call<Solicitacao> postSolicitacao (@Body Solicitacao solicitacao) ;
+    @Multipart
+    @POST("upload")
+    Call<ResponseBody> postSolicitacao (@Body Solicitacao solicitacao,@Part MultipartBody.Part file) ;
 
     @POST("usuario")
     Call<Usuario> postUsuario (@Body Usuario usuario) ;
 
-    @Multipart
-    @POST("upload")
-    Call<ResponseBody> upload( @Part("desricao") RequestBody desricao, @Part MultipartBody.Part file );
 }
