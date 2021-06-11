@@ -12,14 +12,17 @@ public class Solicitacao {
     private String DataSolicitacao;
     private String Foto;
     private String Video;
-    private double Latitude;
-    private double Longitude;
+    private String Endereco;
+    private String Numero;
+    private String Bairro;
+    private String CEP;
+    private String Cidade;
     private int Status;
 
     public Solicitacao () {
     }
 
-    public int getSolicitacaoID ()  {
+    public int getSolicitacaoID () {
         return SolicitacaoID;
     }
 
@@ -99,20 +102,44 @@ public class Solicitacao {
         Video = video;
     }
 
-    public double getLatitude () {
-        return Latitude;
+    public String getEndereco () {
+        return Endereco;
     }
 
-    public void setLatitude (double latitude) {
-        Latitude = latitude;
+    public void setEndereco (String endereco) {
+        Endereco = endereco;
     }
 
-    public double getLongitude () {
-        return Longitude;
+    public String getNumero () {
+        return Numero;
     }
 
-    public void setLongitude (double longitude) {
-        Longitude = longitude;
+    public void setNumero (String numero) {
+        Numero = numero;
+    }
+
+    public String getBairro () {
+        return Bairro;
+    }
+
+    public void setBairro (String bairro) {
+        Bairro = bairro;
+    }
+
+    public String getCEP () {
+        return CEP;
+    }
+
+    public void setCEP (String CEP) {
+        this.CEP = CEP;
+    }
+
+    public String getCidade () {
+        return Cidade;
+    }
+
+    public void setCidade (String cidade) {
+        Cidade = cidade;
     }
 
     public int getStatus () {

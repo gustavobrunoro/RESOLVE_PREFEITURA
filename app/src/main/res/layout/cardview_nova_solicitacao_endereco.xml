@@ -10,11 +10,11 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/et_bairro"
+        app:layout_constraintBottom_toTopOf="@+id/edt_Nova_Solicitacao_Bairro"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/ed_rua"
+            android:id="@+id/edt_Nova_Solicitacao_Endereco"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -24,12 +24,12 @@
             app:met_singleLineEllipsis="true"
             app:met_floatingLabel="normal"
             app:met_textColor="@android:color/holo_blue_dark"
-            app:layout_constraintEnd_toStartOf="@+id/edt_Numero"
+            app:layout_constraintEnd_toStartOf="@+id/edt_Nova_Solicitacao_Numero"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/edt_Numero"
+            android:id="@+id/edt_Nova_Solicitacao_Numero"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -40,18 +40,18 @@
             app:met_textColor="@android:color/holo_blue_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/ed_rua" />
+            app:layout_constraintStart_toEndOf="@+id/edt_Nova_Solicitacao_Endereco" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/et_bairro"
+        android:id="@+id/edt_Nova_Solicitacao_Bairro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Bairro"
         android:maxLines="1"
-        app:layout_constraintBottom_toTopOf="@+id/ed_cep"
+        app:layout_constraintBottom_toTopOf="@+id/edt_Nova_Solicitacao_CEP"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
@@ -60,7 +60,7 @@
         app:met_textColor="@android:color/holo_blue_dark" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/ed_cep"
+        android:id="@+id/edt_Nova_Solicitacao_CEP"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="CEP"
@@ -68,7 +68,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_bairro"
+        app:layout_constraintTop_toBottomOf="@+id/edt_Nova_Solicitacao_Bairro"
         app:met_floatingLabel="normal"
         app:met_singleLineEllipsis="true"
         app:met_textColor="@android:color/holo_blue_dark" />

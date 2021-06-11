@@ -148,7 +148,7 @@
                     android:text="Data Nascimento" />
 
                 <com.santalu.maskedittext.MaskEditText
-                    android:id="@+id/edt_DataNascimento"
+                    android:id="@+id/edt_Usuario_DataNascimento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -162,7 +162,7 @@
                     android:text="Telefone" />
 
                 <com.santalu.maskedittext.MaskEditText
-                    android:id="@+id/edt_Telefone"
+                    android:id="@+id/edt_Usuario_elefone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -176,7 +176,7 @@
                     android:text="CEP" />
 
                 <com.santalu.maskedittext.MaskEditText
-                    android:id="@+id/edt_CEP"
+                    android:id="@+id/edt_Usuario_CEP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -190,7 +190,7 @@
                     android:text="Cidade" />
 
                 <EditText
-                    android:id="@+id/edt_Cidade"
+                    android:id="@+id/edt_Usuario_Cidade"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -233,7 +233,7 @@
                             android:text="Endereço" />
 
                         <EditText
-                            android:id="@+id/edt_Endereco"
+                            android:id="@+id/edt_Usuario_Endereco"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
@@ -256,7 +256,7 @@
                             android:text="Nº" />
 
                         <EditText
-                            android:id="@+id/edt_Numero"
+                            android:id="@+id/edt_Usuario_Numero"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxLines="1"
@@ -272,7 +272,7 @@
                     android:text="Complemento" />
 
                 <EditText
-                    android:id="@+id/edt_Complemento"
+                    android:id="@+id/edt_Usuario_Complemento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

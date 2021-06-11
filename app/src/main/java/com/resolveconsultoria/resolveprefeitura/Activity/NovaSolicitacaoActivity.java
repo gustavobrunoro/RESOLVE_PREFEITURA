@@ -10,6 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,6 +19,7 @@ import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -27,6 +30,8 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.resolveconsultoria.resolveprefeitura.API.Resolve;
 import com.resolveconsultoria.resolveprefeitura.API.RetrofitConfig;
 import com.resolveconsultoria.resolveprefeitura.Database.SharedPreferences;
@@ -115,15 +120,22 @@ public class NovaSolicitacaoActivity extends AppCompatActivity implements Progre
     private ProgressBar progressBar;
     private ProgressRequestBody fileBody;
 
+    private MaterialEditText endereco;
+    private MaterialEditText numero;
+    private MaterialEditText bairro;
+    private MaterialEditText cep;
+
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_solicitacao);
 
         servico = (Servico) getIntent().getSerializableExtra( "Servico" );
-        usuario = (Usuario) getIntent().getSerializableExtra( "Usuario" );
 
         inicializaComponentes ();
+
+        usuario = sharedPreferences.recupraDadosPessoais();
+
         toolbar.setTitle(servico.getDescricao());
 
         configuracoes = sharedPreferences.recupraConfiguracoes();
@@ -293,11 +305,15 @@ public class NovaSolicitacaoActivity extends AppCompatActivity implements Progre
     public void inicializaComponentes (){
 
         toolbar                  = findViewById( R.id.toolbar );
-        imgPreview               = findViewById( R.id.imgPreview);
-        videoPreview             = findViewById( R.id.videoPreview);
-        posicao                  = findViewById( R.id.sw_Nova_Solicitacao_LocalizacaoID);
-        descricao                = findViewById( R.id.ti_Descricao);
-        totalCaracteresDigitados = findViewById( R.id.tv_total_caracteres);
+        imgPreview               = findViewById( R.id.imgPreview );
+        videoPreview             = findViewById( R.id.videoPreview );
+        posicao                  = findViewById( R.id.sw_Nova_Solicitacao_LocalizacaoID );
+        descricao                = findViewById( R.id.ti_Descricao );
+        totalCaracteresDigitados = findViewById( R.id.tv_total_caracteres );
+        endereco                 = findViewById( R.id.edt_Nova_Solicitacao_Endereco );
+        numero                   = findViewById( R.id.edt_Nova_Solicitacao_Numero );
+        bairro                   = findViewById( R.id.edt_Nova_Solicitacao_Bairro );
+        cep                      = findViewById( R.id.edt_Nova_Solicitacao_CEP );
 
         retrofit                 = RetrofitConfig.getRetrofit( );
         resolve                  = retrofit.create( Resolve.class);
@@ -474,8 +490,14 @@ public class NovaSolicitacaoActivity extends AppCompatActivity implements Progre
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         src.compress(Bitmap.CompressFormat.JPEG, 100, os);
 
-        String path = MediaStore.Images.Media.insertImage(getContentResolver(), src, "title", null);
+        String path = MediaStore.Images.Media.insertImage(getContentResolver(), src, "title", nomeArquivo);
         return Uri.parse(path);
+    }
+
+    public File recuperaFoto(){
+        imgPreview.setDrawingCacheEnabled(true);
+        Bitmap bitmap = imgPreview.getDrawingCache();
+        return  new File( getImageUri(bitmap,"teste").getPath() );
     }
 
     public void showAlertGPS(){
@@ -507,35 +529,33 @@ public class NovaSolicitacaoActivity extends AppCompatActivity implements Progre
 
         if (verificarUsuarioLogado()) {
 
+            solicitacao = new Solicitacao();
             SimpleDateFormat simpleFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-            solicitacao.setClienteIDFK(R.string.id_Cliente);
+            solicitacao.setClienteIDFK( Integer.parseInt( getResources().getString( R.string.id_Cliente ) ) );
             solicitacao.setCategoriaIDFK(servico.getCategoriaIDFK());
             solicitacao.setServicoIDFK(servico.getServicoID());
-            solicitacao.setUsuarioIDFK(usuario.getUsuarioID());
-            if (! gps.canGetLocation()) {
-                if (posicao.isChecked()) {
-                    solicitacao.setLatitude(gps.getLatitude());
-                    solicitacao.setLongitude(gps.getLongitude());
-                }
-            }
-            solicitacao.setDescricao(descricao.toString());
+            solicitacao.setUsuarioIDFK(1);
+
+            solicitacao.setDescricao(descricao.getText().toString());
             solicitacao.setDataSolicitacao(simpleFormatter.format(new Date()));
             solicitacao.setStatus(1);
 
-            Bitmap bitmap = imgPreview.getDrawingCache();
+            File file;
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos );
-
-            byte[] dadosImagem = baos.toByteArray();
-
-            File file = null;
+            if (( imgPreview.getDrawable()) != null ){
+                file = recuperaFoto();
+            }
+            else{
+                file = null;
+            }
 
             ProgressRequestBody fileBody = new ProgressRequestBody(file, "media",this);
             MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", file.getName(), fileBody);
 
-            resolve.postSolicitacao(solicitacao,filePart).enqueue(new Callback<ResponseBody>() {
+            Log.i("Controle",new Gson().toJson(solicitacao));
+
+            /*resolve.postSolicitacao(solicitacao,filePart).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse (Call<ResponseBody> call, Response<ResponseBody> response) {
 
@@ -552,7 +572,7 @@ public class NovaSolicitacaoActivity extends AppCompatActivity implements Progre
                 public void onFailure (Call<ResponseBody> call, Throwable t) {
                     Toast.makeText(NovaSolicitacaoActivity.this, "Não foi possivel enviar solicitacão. " + "\n" + t.getMessage(), Toast.LENGTH_LONG).show();
                 }
-            });
+            });*/
         }
         else{
             alertUsuarioLogado();
@@ -579,14 +599,18 @@ public class NovaSolicitacaoActivity extends AppCompatActivity implements Progre
 
     public boolean verificarUsuarioLogado(){
 
-        if (usuario == null ){
-            return false;
-        }else{
-            return true;
-        }
+        return  true;
+
+//        if (usuario == null ){
+//            return false;
+//        }else{
+//            return true;
+//        }
     }
 
-    public void alertUsuarioLogado(){}
+    public void alertUsuarioLogado(){
+        Toast.makeText(this, "Usuario não Logado!", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onProgressUpdate (int percentage) {
@@ -602,4 +626,5 @@ public class NovaSolicitacaoActivity extends AppCompatActivity implements Progre
     public void onFinish () {
         progressBar.setProgress(100);
     }
+
 }

@@ -8,12 +8,10 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,9 +36,6 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
@@ -127,13 +122,13 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         nome           = findViewById( R.id.edt_NomeCompleto );
         email          = findViewById( R.id.edt_Email );
         senha          = findViewById( R.id.edt_Senha );
-        dataNascimento = findViewById( R.id.edt_DataNascimento );
-        telefone       = findViewById( R.id.edt_Telefone );
-        cep            = findViewById( R.id.edt_CEP );
-        cidade         = findViewById( R.id.edt_Cidade );
+        dataNascimento = findViewById( R.id.edt_Usuario_DataNascimento);
+        telefone       = findViewById( R.id.edt_Usuario_elefone);
+        cep            = findViewById( R.id.edt_Usuario_CEP);
+        cidade         = findViewById( R.id.edt_Usuario_Cidade);
         bairro         = findViewById( R.id.edt_Bairro );
-        endereco       = findViewById( R.id.edt_Endereco );
-        numero         = findViewById( R.id.edt_Numero );
+        endereco       = findViewById( R.id.edt_Usuario_Endereco);
+        numero         = findViewById( R.id.edt_Usuario_Numero);
 
         retrofit  = RetrofitConfig.getRetrofit(  );
         resolve   = retrofit.create( Resolve.class );
